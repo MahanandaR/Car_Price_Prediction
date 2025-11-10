@@ -104,7 +104,7 @@ if (engine_capacity <= 700 || engine_capacity > 200000) {
     };
 
   try {
-    const res = await fetch("http://127.0.0.1:8000/predict", {  // 🔹 Change this if your API runs elsewhere
+    const res = await fetch("https://car-price-prediction-xayj.onrender.com", {  // 🔹 Change this if your API runs elsewhere
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
