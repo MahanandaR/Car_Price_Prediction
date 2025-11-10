@@ -1,0 +1,53 @@
+# Virtual Environment
+env/
+env1/
+.venv/
+
+# Jupyter Notebooks
+*.ipynb
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment File
+.env
+*.env
+
+# Dataset (Parquet & CSV Files)
+*.parquet
+*.csv
+*.xlsx
+
+# Python Package (utils)
+utils/
+
+# Local/Temporary Files
+*.log
+*.tmp
+*.bak
+
+# Version Control Files
+.git/
+.gitignore
+
+# IDE/Editor Configs
+.vscode/
+.idea/
+.DS_Store
+
+# Python Package Build Artifacts
+*.egg-info/
+build/
+dist/
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.JPG

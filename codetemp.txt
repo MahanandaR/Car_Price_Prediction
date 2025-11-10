@@ -1,0 +1,121 @@
+// Reset Button
+function resetForm() {
+  document.querySelectorAll("input, select").forEach(el => {
+    if (el.type === "radio") {
+      el.checked = false;
+    } else {
+      el.value = "";
+    }
+  });
+
+  const modelSelect = document.getElementById("model");
+  modelSelect.innerHTML = '<option value="">Select Model</option>';
+
+  document.getElementById("owner1").checked = true;
+
+  const resultBox = document.getElementById("final-prediction");
+  resultBox.style.color = "black";
+  resultBox.innerHTML = "Your prediction result will appear here.";
+}
+
+// Brand-Model Mapping
+const brandModelMap = {
+  'Maruti': ['Wagon R 1.0', 'Alto 800', 'Ertiga', 'Baleno', 'Swift Dzire', 'Ciaz', 'Vitara Brezza'],
+  'Hyundai': ['i10', 'i20', 'Creta', 'Venue', 'Verna', 'Grand i10 Nios', 'Aura'],
+  'Tata': ['Tiago', 'Tigor', 'Nexon', 'Harrier', 'Altroz', 'Punch'],
+  'Honda': ['City', 'Amaze', 'Jazz', 'WR-V'],
+  'Renault': ['Kwid', 'Triber', 'Kiger', 'Duster'],
+  'Mahindra': ['Bolero', 'Scorpio', 'XUV300', 'XUV500', 'Thar'],
+  'Ford': ['Figo', 'Aspire', 'Ecosport'],
+  'KIA': ['Sonet', 'Seltos', 'Carens'],
+  'Volkswagen': ['Polo', 'Vento', 'Taigun'],
+  'Toyota': ['Innova', 'Fortuner', 'Glanza'],
+  'Skoda': ['Rapid', 'Kushaq', 'Slavia'],
+  'MG': ['Hector', 'Astor', 'Gloster'],
+  'Nissan': ['Magnite', 'Kicks'],
+  'Jeep': ['Compass'],
+  'Datsun': ['Redi Go', 'Go Plus'],
+  'BMW': ['X1', '3 Series', '5 Series'],
+  'Chevrolet': ['Beat', 'Cruze'],
+  'Fiat': ['Punto', 'Linea'],
+  'Audi': ['A3', 'A4', 'Q3']
+};
+
+// Populate Models Based on Brand
+document.getElementById("brand").addEventListener("change", function () {
+  const selectedBrand = this.value;
+  const modelSelect = document.getElementById("model");
+  modelSelect.innerHTML = '<option value="">Select Model</option>';
+
+  if (selectedBrand && brandModelMap[selectedBrand]) {
+    brandModelMap[selectedBrand].forEach(model => {
+      const option = document.createElement("option");
+      option.value = model;
+      option.textContent = model;
+      modelSelect.appendChild(option);
+    });
+  }
+});
+
+// Prediction Function
+async function predict() {
+  const outputBox = document.getElementById("final-prediction");
+  outputBox.style.color = "black";
+  outputBox.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Estimating the value of your car...`;
+
+  const brand = document.getElementById("brand").value.trim();
+  const model = document.getElementById("model").value.trim();
+  const km_driven = parseInt(document.getElementById("km_driven").value);
+  const engine_capacity = parseInt(document.getElementById("engine_capacity").value);
+  const fuel_type = document.getElementById("fuel_type").value.trim();
+  const transmission = document.getElementById("transmission").value.trim();
+  const year = parseInt(document.getElementById("year").value);
+  const owner_type = document.querySelector('input[name="owner_type"]:checked')?.value || "";
+
+  // Validation
+  if (!brand || !model || !fuel_type || !transmission || !owner_type || !year || !km_driven || !engine_capacity) {
+    outputBox.style.color = "red";
+    outputBox.textContent = "⚠️ Please fill all details before prediction.";
+    return;
+  }
+
+   const data = {
+        brand: brand,
+        model: model,
+        km_driven: km_driven,
+        engine_capacity: engine_capacity,
+        fuel_type: fuel_type,
+        transmission: transmission,
+        year: year,
+        owner: owner_type,
+    };
+
+  try {
+    const res = await fetch("http://127.0.0.1:8000/predict", {  // 🔹 Change this if your API runs elsewhere
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) throw new Error(`Server error: ${res.status}`);
+
+    const result = await res.json();
+    console.log("API Response:", result);
+
+    if (result.prediction || result.output) {
+      if (result.output) {
+  outputBox.style.color = "#0b8a00";
+  outputBox.innerHTML = `<strong>💰 Estimated Car Price Range:</strong> ${result.output}`;
+}
+    } else {
+      outputBox.style.color = "red";
+      outputBox.textContent = "❌ Failed to get prediction. Please try again later.";
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    outputBox.style.color = "red";
+    outputBox.textContent = "❌ Failed to get prediction. Please try again later.";
+  }
+}
+this is code.
+now make like if they enter KM below range then it should give enter correct details

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Price Predictor</title>
+
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+    body {
+      background: #f5f7fa;
+      color: black;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    .navbar {
+      width: 100%;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: black;
+      color: white;
+    }
+    .navbar .logo { font-weight: 700; font-size: 1.4rem; }
+    .navbar .menu a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #fff;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .navbar .menu a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -5px;
+      background: hsl(190, 100%, 50%);
+      transition: width 0.3s ease;
+    }
+    .navbar .menu a:hover { color: #00d4ff; }
+    .navbar .menu a:hover::after { width: 100%; }
+    .navbar .login-button a {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #00d4ff;
+      color: #000;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .navbar .login-button a:hover {
+      background: #fff;
+      transform: scale(1.05);
+    }
+
+    /* Form Section */
+    .form-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top:40px ;
+      
+      
+    }
+
+    .form-box {
+      display: flex;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      overflow: hidden;
+      max-width: 1000px;
+      width: 100%;
+      /* transition: transform 0.4s ease, box-shadow 0.4s ease; */
+    }
+    .form-box:hover {
+      /* transform: translateY(-5px); */
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    }
+
+    .form-left {
+      flex: 0.8;
+      padding: 30px;
+    }
+
+    .form-left h2 {
+      margin-bottom: 2px;
+      font-size: 1.2rem;
+      color: #00d4ff;
+    }
+
+    .form-left select, 
+    .form-left input {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+      display: block;
+      background: #f9f9f9;
+    }
+
+    /* Fix dropdown */
+    select {
+      max-width: 100%;
+      overflow-y: auto;
+      max-height: 180px; /* Scrollable dropdown */
+    }
+
+    /* Hover effects */
+    .form-left input:hover, 
+    .form-left select:hover {
+      border-color: #00d4ff;
+      box-shadow: 0 0 6px #00d4ff;
+    }
+
+/*Owner CSS*/
+
+    .owner {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Hide the default radio buttons */
+.owner input[type="radio"] {
+  display: none;
+}
+
+/* Style the labels as pill buttons */
+.owner label {
+  padding: 6px 8px;
+  border: 2px solid #ccc;
+  border-radius: 30px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.owner label:hover {
+  background-color: #f5f5f5;
+  border-color: #000;
+}
+
+/* Active (selected) style */
+.owner input[type="radio"]:checked + label {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* Special "Others" button */
+.owner label.others {
+  background-color: red;
+  color: white;
+  border: none;
+}
+
+/* "Others" when selected */
+.owner input[type="radio"]:checked + label.others {
+  background-color: darkred;
+}
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .buttons button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .buttons button:first-child { background: #00d4ff; color: #000; }
+    .buttons button:last-child { background: #ff4757; color: #fff; }
+    .buttons button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
+
+    .form-right {
+      flex: 0.8;
+      background:white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 30px;
+      color: black;
+      transition: background 0.3s ease;
+    }
+    .form-right:hover {
+      background:whitesmoke;
+    }
+
+    .form-right h3 {
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+      color: #00ffb3;
+      transition: color 0.3s ease;
+    }
+    .form-right:hover h3 {
+      color: #00d4ff;
+    }
+
+    /* .prediction-result {
+      font-size: 1 rem;
+      text-align: center;
+      color: #fff;
+    } */
+
+    /* Prediction Box */
+    .prediction-box {
+    max-width: 1000px;
+    width: 700px;
+    margin: 6px auto;
+    padding: 20px auto;
+    border-radius: 2px;
+    background: rgb(189, 228, 235);
+    color: black;
+    text-align: center;
+    margin-bottom: 8px;
+    
+    /* box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease; */
+    }
+    .prediction-box:hover {
+    /* transform: translateY(-5px); */
+        color: #cc0516;
+}
+    .prediction-box h2 {
+    margin-bottom: 2px;
+    color: #bbdde4;
+    }
+/* ===== Carousel Section ===== */
+.form-right {
+  flex: 0.8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  padding: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow:gainsboro;
+}
+
+.carousel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.carousel img.active {
+  opacity: 1;
+}
+
+    /* Footer */
+    .footer {
+      text-align: right;
+      padding: 8px;
+      font-size: 0.9rem;
+      background:gray;
+      color:black;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo">PriceMyCar</div>
+    <div class="menu">
+      <a href="#">Visit Online Shop</a>
+      <a href="#">Benefits</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="login-button">
+      <a href="#">Login To Book <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+  </div>
+
+  <!-- Form Section -->
+  <div class="form-container">
+    <div class="form-box">
+      <!-- Left Side -->
+      <div class="form-left">
+        <h2>Enter Car Details</h2>
+
+        <select id="brand">
+          <option value="">Select Brand</option>
+          <option value="Maruti">Maruti</option>
+          <option value="Hyundai">Hyundai</option>
+          <option value="Tata">Tata</option>
+          <option value="Honda">Honda</option>
+          <option value="Renault">Renault</option>
+          <option value="Mahindra">Mahindra</option>
+          <option value="Ford">Ford</option>
+          <option value="KIA">KIA</option>
+          <option value="Volkswagen">Volkswagen</option>
+          <option value="Toyota">Toyota</option>
+          <option value="Skoda">Skoda</option>
+          <option value="MG">MG</option>
+          <option value="Nissan">Nissan</option>
+          <option value="Jeep">Jeep</option>
+          <option value="Datsun">Datsun</option>
+          <option value="BMW">BMW</option>
+          <option value="Chevrolet">Chevrolet</option>
+          <option value="Fiat">Fiat</option>
+          <option value="Audi">Audi</option>
+        </select>
+
+        <select id="model">
+          <option value="">Select Model</option>
+        </select>
+
+        <input id="km_driven" type="number" placeholder="Enter KM Driven" type="number" required>
+
+        <input id="engine_capacity" type="number" placeholder="Engine Capacity (CC)" type="number"  required>
+
+        <select id="fuel_type">
+          <option value="">Select Fuel Type</option>
+          <option value="Petrol">Petrol</option>
+          <option value="Diesel">Diesel</option>
+          <option value="CNG">CNG</option>
+        </select>
+
+        <select id="transmission">
+          <option value="">Select Transmission</option>
+          <option value="Manual">Manual</option>
+          <option value="Automatic">Automatic</option>
+        </select>
+
+        <select id="year">
+          <option value="">Select Manufacture Year Car</option>
+          <option>2010</option>
+          <option>2011</option>
+          <option>2012</option>
+          <option>2013</option>
+          <option>2014</option>
+          <option>2015</option>
+          <option>2016</option>
+          <option>2017</option>
+          <option>2018</option>
+          <option>2019</option>
+          <option>2020</option>
+          <option>2021</option>
+          <option>2022</option>
+          <option>2023</option>
+          <option>2024</option>
+        </select>
+
+        <!--Owner Input-->
+            <div id="owner" class="owner">
+                <input type="radio" id="owner1" name="owner_type" value="1st owner" checked>
+                <label for="owner1">First Owner</label>
+                <input type="radio" id="owner2" name="owner_type" value="2nd owner">
+                <label for="owner2">Second Owner</label>
+                <input type="radio" id="owner3" name="owner_type" value="3rd owner">
+                <label for="owner3">Third Owner</label>
+                <input type="radio" id="owner4" name="owner_type" value="Others">
+                <label for="owner4">Others</label>
+            </div>
+
+        <div class="buttons">
+          <button onclick="predict()">Predict</button>
+          <button onclick="resetForm()">Reset</button>
+        </div>
+      </div>
+
+
+      <!-- Right Side: Image Carousel -->
+<div class="form-right">
+  <div class="carousel">
+    <img src="car1.png" alt="Car 1" class="active">
+    <img src="car2.jpg" alt="Car 2">
+    <img src="car3.jpg" alt="Car 3">
+    <img src="car4.jpeg" alt="Car 4">
+    <img src="car5.jpg" alt="Car 5">
+    <img src="car6.jpg" alt="Car 6">
+    <img src="car7.JPG" alt="Car 7">
+    <img src="car8.JPG" alt="Car 8">
+  </div>
+</div>
+
+    </div>
+  </div>
+
+<div class="prediction-box">
+  <h5>Prediction Result</h5>
+  <p id="final-prediction">Your prediction result will appear here.</p>
+</div>
+
+  <!-- Footer -->
+  <div class="footer">
+    © 2025 PriceMyCar by Motor.co
+  </div>
+
+
+  <!--Javascript File Section-->
+  <script>
+  let index = 0;
+  const images = document.querySelectorAll(".carousel img");
+
+  setInterval(() => {
+    images[index].classList.remove("active");
+    index = (index + 1) % images.length;
+    images[index].classList.add("active");
+  }, 3000); // Change every 3 seconds
+</script>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
