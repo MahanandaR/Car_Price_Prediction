@@ -720,7 +720,7 @@ docker ps
 ```bash
 docker stop container_id
 ```
-
+-----------------------------------------------------------------
 ## Deployment
 
 Follow these steps carefully to deploy your FastAPI application on Render :
@@ -1190,6 +1190,7 @@ CAR_PRICE_PREDICTION/
 └── uvicorn                        # Server runner
 
 ```
+-------------------------------------------------------------------------
 ## License
 
 This project is licensed under the [MIT License](LICENSE). You are free to use and modify the code as needed.
