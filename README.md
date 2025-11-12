@@ -780,7 +780,7 @@ You can open `index.html` directly in your browser or serve it via a local HTTP 
 
 Access the live Website [here](https://mahanandar.github.io/Car_Price_Prediction/) or Click on the Image below
 
-<a https://mahanandar.github.io/Car_Price_Prediction/><img width="1899" height="932" alt="image" src="https://github.com/user-attachments/assets/273b5d97-059b-43b5-a9bd-e854322effd3" />
+<a href="https://mahanandar.github.io/Car_Price_Prediction/"><img width="1899" height="932" alt="image" src="https://github.com/user-attachments/assets/273b5d97-059b-43b5-a9bd-e854322effd3" />
 </a>
 
 > [!IMPORTANT]
